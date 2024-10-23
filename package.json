@@ -1,0 +1,27 @@
+{
+  "name": "vite-project",
+  "private": true,
+  "version": "0.0.0",
+  "homepage": "https://tvancisin.github.io/fatalities_map/",
+  "type": "module",
+  "scripts": {
+    "predeploy": "yarn build",
+    "deploy": "gh-pages -d dist",
+    "dev": "vite",
+    "build": "vite build"
+  },
+  "devDependencies": {
+    "@sveltejs/vite-plugin-svelte": "^3.1.1",
+    "gh-pages": "^6.1.1",
+    "svelte": "^4.2.18",
+    "vite": "^5.4.0"
+  },
+  "dependencies": {
+    "@fortawesome/fontawesome-svg-core": "^6.6.0",
+    "@fortawesome/free-solid-svg-icons": "^6.6.0",
+    "@fortawesome/svelte-fontawesome": "^0.2.2",
+    "d3": "^7.9.0",
+    "mapbox-gl": "^3.5.2",
+    "turf": "^3.0.14"
+  }
+}
