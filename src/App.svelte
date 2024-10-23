@@ -109,7 +109,7 @@
 
   // LOAD CENTRAL POINTS
   let labels_geojson;
-  let central_path = "/data/central_points.json";
+  let central_path = "./data/central_points.json";
   getGeo(central_path).then((geo) => {
     labels_geojson = geo;
   });
@@ -119,7 +119,7 @@
   let mygeojson;
   let myallgeojson;
   let country_dropdown;
-  const json_path = "/data/country_polygons.json";
+  const json_path = "./data/country_polygons.json";
   let scaleHeight = d3.scaleLinear().domain([1, 10000]).range([1, 100000]);
 
   getGeo(json_path).then((geo) => {
@@ -346,19 +346,19 @@
 </main>
 
 <style>
-  #logo {
+  /* #logo {
     position: absolute;
     left: 2px;
     top: 2px;
     height: 38px;
     z-index: 20;
-  }
+  } */
 
-  @media only screen and (max-width: 768px) {
+  /* @media only screen and (max-width: 768px) {
     #logo {
       height: 27px;
     }
-  }
+  } */
 
   #tracker_button {
     position: absolute;

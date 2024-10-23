@@ -788,7 +788,7 @@
         display: inline-block;
     }
 
-    .tooltip-container .tooltip-text {
+    /* .tooltip-container .tooltip-text {
         visibility: hidden;
         width: 135px;
         background-color: black;
@@ -843,7 +843,7 @@
     .tooltip-container:hover .tooltip-text {
         visibility: visible;
         opacity: 1;
-    }
+    } */
 
     #acled_month,
     #acled_year,
