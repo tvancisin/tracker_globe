@@ -165,8 +165,7 @@
                 .style("top", rowHeight + "px")
                 .style("left", rowWidth + "px")
                 .html(
-                    "Change from last year. <br> Last Updated: " +
-                        acled_update,
+                    "Change from last year. <br> Last Updated: " + acled_update,
                 )
                 .style("visibility", "visible");
         } else {
@@ -180,7 +179,7 @@
         }
     }
 
-    function hide_fatalities_tooltip () {
+    function hide_fatalities_tooltip() {
         d3.select("#month_tooltip").style("visibility", "hidden");
     }
 </script>
@@ -200,10 +199,9 @@
     </div>
 
     <div id="peace_content">
+        <div id="month_tooltip"></div>
         <div id="overview" bind:clientHeight={overview_height}>
-            <h5>Overview</h5>
             <div class="content-wrapper">
-                <div id="month_tooltip"></div>
                 <div class="content-box">
                     <h6>Fatalities Last Month</h6>
                     <div
@@ -282,7 +280,8 @@
         </div>
 
         <div id="peace_process">
-            <h5>Peace Process</h5>
+            <!-- <h5>Peace Process</h5> -->
+            <!-- <hr style="border: 1px solid gray; width: 400px"> -->
             <div class="scrollable-content">
                 <p
                     style="margin-bottom: 10px; text-align: center; font-weight: 400"
@@ -300,21 +299,21 @@
                         />
                     {/each}
                 </svg>
-                <br>
+                <br />
                 {@html selected_country_details?.peace_process_text}
             </div>
         </div>
 
         <div id="general">
-            <h5>General</h5>
+            <!-- <hr style="border: 1px solid gray; width: 400px"> -->
             <div class="scrollable-content">
                 <p
-                    style="margin-bottom: 0px; margin-top: 5px; text-align: center; font-weight: 400"
+                    style="margin-bottom: 0px; margin-top: 10px; text-align: center; font-weight: 450"
                 >
                     Global Peace Index Ranking:
                 </p>
                 <div id="gpi" bind:clientWidth={vis_width}>
-                    <svg height="45px" width={vis_width}>
+                    <svg height="35px" width={vis_width}>
                         <defs>
                             <linearGradient id="Gradient1">
                                 <stop class="stop1" offset="0%" />
@@ -328,19 +327,19 @@
                             y="0"
                             rx="2"
                             width={vis_width - 5}
-                            height="30"
+                            height="20"
                         />
                         <line
                             x1={gpi_scaling(gpi)}
                             y1="0"
                             x2={gpi_scaling(gpi)}
-                            y2="30"
+                            y2="20"
                             stroke="white"
                             stroke-width="1"
                         />
                         <text
                             x={gpi_scaling(gpi) - 5}
-                            y="20"
+                            y="15"
                             paint-order="stroke"
                             stroke="black"
                             fill="white"
@@ -350,7 +349,7 @@
                         >
                         <text
                             x="5"
-                            y="40"
+                            y="30"
                             fill="black"
                             font-size="10"
                             font-weight="500"
@@ -358,7 +357,7 @@
                         >
                         <text
                             x={vis_width}
-                            y="40"
+                            y="30"
                             fill="black"
                             font-size="10"
                             font-weight="500"
@@ -368,12 +367,12 @@
                 </div>
 
                 <p
-                    style="margin-bottom: 0px; margin-top: 15px; text-align: center; font-weight: 400"
+                    style="margin-bottom: 0px; margin-top: 15px; text-align: center; font-weight: 450"
                 >
                     Corruption Perception Index Ranking:
                 </p>
                 <div id="cpi">
-                    <svg height="45px" width={vis_width}>
+                    <svg height="35x" width={vis_width}>
                         <defs>
                             <linearGradient id="Gradient2">
                                 <stop class="stop11" offset="0%" />
@@ -387,19 +386,19 @@
                             rx="2"
                             y="0"
                             width={vis_width - 5}
-                            height="30"
+                            height="20"
                         />
                         <line
                             x1={cpi_scaling(cpi)}
                             y1="0"
                             x2={cpi_scaling(cpi)}
-                            y2="30"
+                            y2="20"
                             stroke="white"
                             stroke-width="1"
                         />
                         <text
                             x={cpi_scaling(cpi) - 5}
-                            y="20"
+                            y="15"
                             paint-order="stroke"
                             stroke="black"
                             fill="white"
@@ -409,7 +408,7 @@
                         >
                         <text
                             x="5"
-                            y="40"
+                            y="30"
                             fill="black"
                             font-size="10"
                             font-weight="500"
@@ -417,7 +416,7 @@
                         >
                         <text
                             x={vis_width}
-                            y="40"
+                            y="30"
                             fill="black"
                             font-size="10"
                             font-weight="500"
@@ -433,7 +432,7 @@
         </div>
 
         <div id="tracker">
-            <h5>PA-X Tracker & Database</h5>
+            <!-- <hr style="border: 1px solid gray; width: 400px"> -->
             <div id="database_tooltip">tooltip</div>
             <div class="content-wrapper">
                 <div class="content-box-buttons">
@@ -468,10 +467,6 @@
 </div>
 
 <style>
-    :root {
-        color-scheme: dark;
-    }
-
     .visualization {
         color: black;
         position: fixed;
@@ -479,7 +474,7 @@
         width: 500px;
         height: calc(100%);
         transition: right 0.4s ease;
-        background-color: rgb(66 66 66 / 93%);
+        background-color: white;
         overflow: hidden;
         z-index: 5;
         font-family: "Montserrat", sans-serif;
@@ -499,11 +494,11 @@
     }
 
     h3 {
-        color: rgb(255, 255, 255);
+        color: black;
         margin: auto;
         font-size: 1.3em;
         padding: 5px;
-        font-weight: 450;
+        font-weight: 700;
     }
 
     @media only screen and (max-width: 1450px) {
@@ -528,7 +523,7 @@
         position: absolute;
         right: 4px;
         background: none;
-        color: #fdd900;
+        color: black;
         border: none;
         padding: 2px 10px;
         border-radius: 2px;
@@ -564,9 +559,9 @@
         overflow-y: auto;
         font-size: 0.8em;
         margin-top: 0px;
-        margin-right: 4px;
-        margin-left: 4px;
-        margin-bottom: 4px;
+        /* margin-right: 2px;
+        margin-left: 2px; */
+        /* margin-bottom: 4px; */
         border-radius: 2px;
         gap: 5px;
     }
@@ -631,6 +626,9 @@
         display: flex;
         flex-direction: column;
         line-height: 1.5;
+        box-shadow:
+            inset 0 8px 8px -10px rgba(0, 0, 0, 0.5),
+            /* Top shadow */ inset 0 -8px 8px -10px rgba(0, 0, 0, 0.5); /* Bottom shadow */
     }
 
     #tracker_link a,
@@ -653,13 +651,16 @@
         overflow-y: auto;
         display: flex;
         flex-direction: column;
+        box-shadow:
+            inset 0 8px 8px -10px rgba(0, 0, 0, 0.5),
+            /* Top shadow */ inset 0 -8px 8px -10px rgba(0, 0, 0, 0.5); /* Bottom shadow */
     }
 
     #general,
     #tracker,
     #peace_process,
     #overview {
-        background: white;
+        background: rgba(212, 212, 212, 0.5);
         border-radius: 2px;
     }
 
@@ -719,7 +720,7 @@
         padding: 2px 15px;
         color: black;
         font-size: 0.9em;
-        font-weight: 450;
+        font-weight: 500;
     }
 
     @media only screen and (max-width: 768px) {
@@ -741,7 +742,6 @@
 
     .content-box {
         flex-basis: 50%;
-        background: white;
         color: black;
         padding: 2px;
         display: flex;
