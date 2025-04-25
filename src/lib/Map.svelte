@@ -4,6 +4,7 @@
   import * as turf from "turf";
   import Dropdown from "./Dropdown.svelte";
   import * as d3 from "d3";
+  import { icon } from "@fortawesome/fontawesome-svg-core";
 
   const dispatch = createEventDispatcher();
 
@@ -22,11 +23,11 @@
 
   function getIconSize() {
     if (window.innerWidth <= 768) {
-      return { width: 17, height: 21 }; // Smaller size for small screens
+      return { width: 17 }; // Smaller size for small screens
     } else if (window.innerWidth <= 1000) {
-      return { width: 20, height: 25 }; // Smaller size for small screens
+      return { width: 20 }; // Smaller size for small screens
     } else {
-      return { width: 24, height: 30 }; // Smaller size for small screens
+      return { width: 24 }; // Smaller size for small screens
     }
   }
 
@@ -263,23 +264,19 @@
       //ICONS FOR AGREEMENTS
       let popup; // Declare the popup variable outside the event listeners
 
-      const { width, height } = getIconSize();
+      const { width } = getIconSize(); // Just grab width
 
       for (const marker of icon_data.features) {
         const el = document.createElement("div");
-        if (
-          marker.properties.country === "Niger" ||
-          marker.properties.country === "Nigeria" ||
-          marker.properties.country === "Pakistan"
-        ) {
-          el.style.backgroundImage = `url(${localimageURL})`;
-        } else {
-          el.style.backgroundImage = `url(${imageURL})`;
-        }
         el.style.width = `${width}px`;
-        el.style.height = `${height}px`;
-        el.style.backgroundSize = "100%";
         el.style.cursor = "pointer";
+
+        const img = document.createElement("img");
+        img.src = marker.properties.type === "local" ? localimageURL : imageURL;
+        img.style.width = "100%";
+        img.style.height = "auto"; // maintains aspect ratio
+
+        el.appendChild(img);
 
         el.addEventListener("mouseover", () => {
           //remove fatalities listener
@@ -392,7 +389,7 @@
 
 <div class="map-container" bind:clientHeight={height}>
   <div id="map" bind:this={map}></div>
-  <Dropdown {country_dropdown} on:close={dropdownSelection}/>
+  <Dropdown {country_dropdown} on:close={dropdownSelection} />
   <button id="refresh_button" on:click={flyToInitialPosition} title="Refresh">
     <i class="fa fa-refresh"></i>
   </button>

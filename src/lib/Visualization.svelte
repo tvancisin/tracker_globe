@@ -182,6 +182,8 @@
     function hide_fatalities_tooltip() {
         d3.select("#month_tooltip").style("visibility", "hidden");
     }
+
+    
 </script>
 
 <div

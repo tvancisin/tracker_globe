@@ -89,6 +89,7 @@
         type: "Feature",
         properties: {
           country: d.Country_entity,
+          type: d.type,
           iso: d.iso_code,
           tooltip: d.point_tooltip,
           iconSize: [25, 25],
@@ -156,6 +157,8 @@
     //all and fatalities arrays
     const iso3all = country_data.map((country) => country.iso_code);
     const iso3fatal = polygon_data.map((country) => country.iso3c);
+
+    
     //remove fatalities from all array
     const resultArray = iso3all.filter((iso3) => !iso3fatal.includes(iso3));
     //remove features from all geojson
@@ -195,6 +198,8 @@
   function openTracker() {
     window.open("https://pax.peaceagreements.org/tracker/", "_blank");
   }
+
+  
 </script>
 
 <main
@@ -258,7 +263,7 @@
         font-weight="400"
         text-anchor="start"
       >
-        Agreement in 2023
+        Agreement in 2024
       </text>
 
       <image href="./loc_agt.png" x="80%" y="36%" width="18%" height="28%" />
@@ -270,7 +275,7 @@
         font-weight="400"
         text-anchor="start"
       >
-        Local agreement in 2023
+        Local agreement in 2024
       </text>
 
       <rect x="84%" y="69%" width="10%" rx="1" height="25%" fill="#A1A1A2" />
