@@ -1,10 +1,10 @@
 <script>
+  import * as d3 from "d3";
   import { onMount } from "svelte";
+  import { getGeo, getCSV } from "./utils";
   import Map from "./lib/Map.svelte";
   import Visualization from "./lib/Visualization.svelte";
   import Info from "./lib/Info.svelte";
-  import * as d3 from "d3";
-  import { getGeo, getCSV } from "./utils";
 
   let vh;
   let width;
@@ -108,23 +108,26 @@
     };
   });
 
-  // LOAD CENTRAL POINTS
+  // LOAD JSON FILES
+  let scaleHeight = d3.scaleLinear().domain([1, 10000]).range([1, 150000]);
   let labels_geojson;
-  let central_path = "./data/central_points.json";
-  getGeo(central_path).then((geo) => {
-    labels_geojson = geo;
-  });
-
-  // LOAD GEOJSON
   let all_polygons;
   let mygeojson;
   let myallgeojson;
   let country_dropdown;
-  const json_path = "./data/country_polygons.json";
-  let scaleHeight = d3.scaleLinear().domain([1, 10000]).range([1, 100000]);
+  let info;
+
+  const json_path = [
+    "./data/country_polygons.json",
+    "./data/central_points.json",
+    "./data/info_section.json",
+  ];
 
   getGeo(json_path).then((geo) => {
-    all_polygons = geo;
+    all_polygons = geo[0];
+    labels_geojson = geo[1];
+    info = geo[2];
+
     //array of fatalities countries
     const isoA3Map = polygon_data.reduce((acc, country) => {
       acc[country.iso3c] = country;
@@ -133,8 +136,8 @@
 
     //remove countries not in above array and add fatalities to geojson
     const fatalities_geojson = {
-      ...geo,
-      features: geo.features
+      ...geo[0],
+      features: geo[0].features
         .filter((feature) => isoA3Map[feature.properties.ISO_A3]) // Keep only matching features
         .map((feature) => {
           // Add total_fatalities to each feature
@@ -158,11 +161,10 @@
     const iso3all = country_data.map((country) => country.iso_code);
     const iso3fatal = polygon_data.map((country) => country.iso3c);
 
-    
     //remove fatalities from all array
     const resultArray = iso3all.filter((iso3) => !iso3fatal.includes(iso3));
     //remove features from all geojson
-    const filteredFeatures = geo.features.filter((feature) =>
+    const filteredFeatures = geo[0].features.filter((feature) =>
       resultArray.includes(feature.properties.ISO_A3),
     );
 
@@ -198,8 +200,6 @@
   function openTracker() {
     window.open("https://pax.peaceagreements.org/tracker/", "_blank");
   }
-
-  
 </script>
 
 <main
@@ -213,19 +213,17 @@
     style="height: calc(var(--vh, 1vh) * 100);"
     on:click={handleScreenClick}
   >
-    <button id="loading_button" on:click={handleScreenClick} 
+    <button id="loading_button" on:click={handleScreenClick}
       >PA-X Tracker Globe</button
     >
     <p id="loading_text">loading...</p>
   </div>
 
-  <h1>PA-X Tracker Globe</h1>
+  <h1 style="font-weight: 500;">PA-X Tracker Globe</h1>
 
-  <!-- <a href="https://peacerep.org/" target="_blank" title="Visit PeaceRep Website"
-    ><img id="logo" alt="PeaceRep Logo" src={path} /></a
-  > -->
-
-  <button id="tracker_button" on:click={openTracker} title="Go to PA-X Tracker"> TRACKER </button>
+  <button id="tracker_button" on:click={openTracker} title="Go to PA-X Tracker">
+    TRACKER
+  </button>
 
   <button id="info_button" on:click={openInformation} title="Information">
     <i class="fa fa-info"></i>
@@ -245,7 +243,11 @@
     />
   {/if}
 
-  <Info on:close={handleClose} />
+  <Visualization {selected_country_details} on:close={handleClose} />
+
+  {#if info}
+    <Info {info} on:close={handleClose} />
+  {/if}
   <div id="agt_legend">
     <h4>Agreement</h4>
     <svg
@@ -346,29 +348,13 @@
     </svg>
   </div>
   <div id="update">Last 12 months of fatalities from {last_update_legend}</div>
-
-  <Visualization {selected_country_details} on:close={handleClose} />
 </main>
 
 <style>
-  /* #logo {
-    position: absolute;
-    left: 2px;
-    top: 2px;
-    height: 38px;
-    z-index: 20;
-  } */
-
-  /* @media only screen and (max-width: 768px) {
-    #logo {
-      height: 27px;
-    }
-  } */
-
   #tracker_button {
     position: absolute;
     top: 3px;
-    left: 5px;
+    left: 3px;
     background-color: white;
     border: 1px solid rgb(173, 173, 173);
     color: black;
@@ -381,7 +367,6 @@
     cursor: pointer;
     z-index: 10;
     font-weight: 500;
-    /* width: 70px; */
   }
 
   @media only screen and (max-width: 768px) {

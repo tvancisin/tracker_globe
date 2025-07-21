@@ -4,7 +4,6 @@
   import * as turf from "turf";
   import Dropdown from "./Dropdown.svelte";
   import * as d3 from "d3";
-  import { icon } from "@fortawesome/fontawesome-svg-core";
 
   const dispatch = createEventDispatcher();
 

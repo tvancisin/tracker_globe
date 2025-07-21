@@ -1,13 +1,10 @@
 <script>
-    import { onMount } from "svelte";
+    import * as d3 from "d3";
     import { createEventDispatcher } from "svelte";
     import { faArrowUp, faArrowDown } from "@fortawesome/free-solid-svg-icons";
-    import * as d3 from "d3";
     import { FontAwesomeIcon } from "@fortawesome/svelte-fontawesome";
 
     const dispatch = createEventDispatcher();
-
-    //colors of the map: #1a1a1a (land) #263852 (water)
 
     export let selected_country_details;
     let details_width;
@@ -182,8 +179,6 @@
     function hide_fatalities_tooltip() {
         d3.select("#month_tooltip").style("visibility", "hidden");
     }
-
-    
 </script>
 
 <div
@@ -191,281 +186,287 @@
     bind:clientWidth={details_width}
     bind:clientHeight={details_height}
 >
-    <div id="peace_title_div">
-        <button class="btn close" on:click={closeVisualization}
-            ><i class="fa fa-close"></i></button
-        >
-        {#if selected_country_details}
+    {#if selected_country_details}
+        <div id="peace_title_div">
+            <button class="btn close" on:click={closeVisualization}
+                ><i class="fa fa-close"></i></button
+            >
             <h3>{selected_country_details.name}</h3>
-        {/if}
-    </div>
-
-    <div id="peace_content">
-        <div id="month_tooltip"></div>
-        <div id="overview" bind:clientHeight={overview_height}>
-            <div class="content-wrapper">
-                <div class="content-box">
-                    <h6>Fatalities Last Month</h6>
-                    <div
-                        class="row"
-                        on:mousemove={(event) =>
-                            show_fatalities_tooltip("acled_month", event)}
-                        on:mouseleave={hide_fatalities_tooltip}
-                        role="alert"
-                    >
-                        <div id="acled_month">ACLED: {acled_month}</div>
-                        <div id="acled_m_change">
-                            {#if acled_month_change > 0}
-                                <FontAwesomeIcon icon={faArrowUp} />
-                            {:else if acled_month_change < 0}
-                                <FontAwesomeIcon icon={faArrowDown} />
-                            {/if}
-                            {acled_month_change}
-                        </div>
-                    </div>
-                    <div
-                        class="row"
-                        on:mousemove={(event) =>
-                            show_fatalities_tooltip("ucdp_month", event)}
-                        on:mouseleave={hide_fatalities_tooltip}
-                        role="alert"
-                    >
-                        <div id="ucdp_month">UCDP: {ucdp_month}</div>
-                        <div id="ucdp_m_change">
-                            {#if ucdp_month_change > 0}
-                                <FontAwesomeIcon icon={faArrowUp} />
-                            {:else if ucdp_month_change < 0}
-                                <FontAwesomeIcon icon={faArrowDown} />
-                            {/if}
-                            {ucdp_month_change}
-                        </div>
-                    </div>
-                </div>
-                <div class="content-box">
-                    <h6>Fatalities Last Year</h6>
-                    <div
-                        class="row"
-                        on:mousemove={(event) =>
-                            show_fatalities_tooltip("acled_year", event)}
-                        on:mouseleave={hide_fatalities_tooltip}
-                        role="alert"
-                    >
-                        <div id="acled_year">ACLED: {acled_year}</div>
-                        <div id="acled_y_change" class="tooltip-container">
-                            {#if acled_year_change > 0}
-                                <FontAwesomeIcon icon={faArrowUp} />
-                            {:else if acled_year_change < 0}
-                                <FontAwesomeIcon icon={faArrowDown} />
-                            {/if}
-                            {acled_year_change}
-                        </div>
-                    </div>
-                    <div
-                        class="row"
-                        on:mousemove={(event) =>
-                            show_fatalities_tooltip("ucdp_year", event)}
-                        on:mouseleave={hide_fatalities_tooltip}
-                        role="alert"
-                    >
-                        <div id="ucdp_year">UCDP: {ucdp_year}</div>
-                        <div id="ucdp_y_change" class="tooltip-container">
-                            {#if ucdp_year_change > 0}
-                                <FontAwesomeIcon icon={faArrowUp} />
-                            {:else if ucdp_year_change < 0}
-                                <FontAwesomeIcon icon={faArrowDown} />
-                            {/if}
-                            {ucdp_year_change}
-                        </div>
-                    </div>
-                </div>
-            </div>
         </div>
 
-        <div id="peace_process">
-            <!-- <h5>Peace Process</h5> -->
-            <!-- <hr style="border: 1px solid gray; width: 400px"> -->
-            <div class="scrollable-content">
-                <p
-                    style="margin-bottom: 10px; text-align: center; font-weight: 400"
-                >
-                    {agts} Peace Agreements:
-                </p>
-                <svg height="25px" width={vis_width - 5}>
-                    {#each x_y_rectangles as rect (rect.x + "-" + rect.y)}
-                        <rect
-                            x={rect.x}
-                            y={rect.y}
-                            width={rectSize}
-                            height={rectSize}
-                            fill="black"
-                        />
-                    {/each}
-                </svg>
-                <br />
-                {@html selected_country_details?.peace_process_text}
-            </div>
-        </div>
-
-        <div id="general">
-            <!-- <hr style="border: 1px solid gray; width: 400px"> -->
-            <div class="scrollable-content">
-                <p
-                    style="margin-bottom: 0px; margin-top: 10px; text-align: center; font-weight: 450"
-                >
-                    Global Peace Index Ranking:
-                </p>
-                <div id="gpi" bind:clientWidth={vis_width}>
-                    <svg height="35px" width={vis_width}>
-                        <defs>
-                            <linearGradient id="Gradient1">
-                                <stop class="stop1" offset="0%" />
-                                <stop class="stop2" offset="50%" />
-                                <stop class="stop3" offset="100%" />
-                            </linearGradient>
-                        </defs>
-                        <rect
-                            id="rect1"
-                            x="5"
-                            y="0"
-                            rx="2"
-                            width={vis_width - 5}
-                            height="20"
-                        />
-                        <line
-                            x1={gpi_scaling(gpi)}
-                            y1="0"
-                            x2={gpi_scaling(gpi)}
-                            y2="20"
-                            stroke="white"
-                            stroke-width="1"
-                        />
-                        <text
-                            x={gpi_scaling(gpi) - 5}
-                            y="15"
-                            paint-order="stroke"
-                            stroke="black"
-                            fill="white"
-                            stroke-linecap="butt"
-                            stroke-linejoin="miter"
-                            text-anchor="end">{gpi}</text
-                        >
-                        <text
-                            x="5"
-                            y="30"
-                            fill="black"
-                            font-size="10"
-                            font-weight="500"
-                            text-anchor="start">more peaceful</text
-                        >
-                        <text
-                            x={vis_width}
-                            y="30"
-                            fill="black"
-                            font-size="10"
-                            font-weight="500"
-                            text-anchor="end">less peaceful</text
-                        >
-                    </svg>
-                </div>
-
-                <p
-                    style="margin-bottom: 0px; margin-top: 15px; text-align: center; font-weight: 450"
-                >
-                    Corruption Perception Index Ranking:
-                </p>
-                <div id="cpi">
-                    <svg height="35x" width={vis_width}>
-                        <defs>
-                            <linearGradient id="Gradient2">
-                                <stop class="stop11" offset="0%" />
-                                <stop class="stop22" offset="50%" />
-                                <stop class="stop33" offset="100%" />
-                            </linearGradient>
-                        </defs>
-                        <rect
-                            id="rect2"
-                            x="5"
-                            rx="2"
-                            y="0"
-                            width={vis_width - 5}
-                            height="20"
-                        />
-                        <line
-                            x1={cpi_scaling(cpi)}
-                            y1="0"
-                            x2={cpi_scaling(cpi)}
-                            y2="20"
-                            stroke="white"
-                            stroke-width="1"
-                        />
-                        <text
-                            x={cpi_scaling(cpi) - 5}
-                            y="15"
-                            paint-order="stroke"
-                            stroke="black"
-                            fill="white"
-                            stroke-linecap="butt"
-                            stroke-linejoin="miter"
-                            text-anchor="end">{cpi}</text
-                        >
-                        <text
-                            x="5"
-                            y="30"
-                            fill="black"
-                            font-size="10"
-                            font-weight="500"
-                            text-anchor="start">less corrupt</text
-                        >
-                        <text
-                            x={vis_width}
-                            y="30"
-                            fill="black"
-                            font-size="10"
-                            font-weight="500"
-                            text-anchor="end">more corrupt</text
-                        >
-                    </svg>
-                </div>
-
-                <br />
-
-                {@html selected_country_details?.sm_general_updates}
-            </div>
-        </div>
-
-        <div id="tracker">
-            <!-- <hr style="border: 1px solid gray; width: 400px"> -->
-            <div id="database_tooltip">tooltip</div>
-            <div class="content-wrapper">
-                <div class="content-box-buttons">
-                    <div id="tracker_link">
-                        <a
-                            href={tracker_link}
-                            target="_blank"
+        <div id="peace_content">
+            <div id="month_tooltip"></div>
+            <div id="overview" bind:clientHeight={overview_height}>
+                <div class="content-wrapper">
+                    <div class="content-box">
+                        <h6>Fatalities Last Month</h6>
+                        <div
+                            class="row"
                             on:mousemove={(event) =>
-                                show_database_tooltip("PA-X Tracker", event)}
-                            on:mouseleave={hide_database_tooltip}
+                                show_fatalities_tooltip("acled_month", event)}
+                            on:mouseleave={hide_fatalities_tooltip}
+                            role="alert"
                         >
-                            <img src="./pax.png" alt="pax logo" />
-                        </a>
+                            <div id="acled_month">ACLED: {acled_month}</div>
+                            <div id="acled_m_change">
+                                {#if acled_month_change > 0}
+                                    <FontAwesomeIcon icon={faArrowUp} />
+                                {:else if acled_month_change < 0}
+                                    <FontAwesomeIcon icon={faArrowDown} />
+                                {/if}
+                                {acled_month_change}
+                            </div>
+                        </div>
+                        <div
+                            class="row"
+                            on:mousemove={(event) =>
+                                show_fatalities_tooltip("ucdp_month", event)}
+                            on:mouseleave={hide_fatalities_tooltip}
+                            role="alert"
+                        >
+                            <div id="ucdp_month">UCDP: {ucdp_month}</div>
+                            <div id="ucdp_m_change">
+                                {#if ucdp_month_change > 0}
+                                    <FontAwesomeIcon icon={faArrowUp} />
+                                {:else if ucdp_month_change < 0}
+                                    <FontAwesomeIcon icon={faArrowDown} />
+                                {/if}
+                                {ucdp_month_change}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="content-box">
+                        <h6>Fatalities Last Year</h6>
+                        <div
+                            class="row"
+                            on:mousemove={(event) =>
+                                show_fatalities_tooltip("acled_year", event)}
+                            on:mouseleave={hide_fatalities_tooltip}
+                            role="alert"
+                        >
+                            <div id="acled_year">ACLED: {acled_year}</div>
+                            <div id="acled_y_change" class="tooltip-container">
+                                {#if acled_year_change > 0}
+                                    <FontAwesomeIcon icon={faArrowUp} />
+                                {:else if acled_year_change < 0}
+                                    <FontAwesomeIcon icon={faArrowDown} />
+                                {/if}
+                                {acled_year_change}
+                            </div>
+                        </div>
+                        <div
+                            class="row"
+                            on:mousemove={(event) =>
+                                show_fatalities_tooltip("ucdp_year", event)}
+                            on:mouseleave={hide_fatalities_tooltip}
+                            role="alert"
+                        >
+                            <div id="ucdp_year">UCDP: {ucdp_year}</div>
+                            <div id="ucdp_y_change" class="tooltip-container">
+                                {#if ucdp_year_change > 0}
+                                    <FontAwesomeIcon icon={faArrowUp} />
+                                {:else if ucdp_year_change < 0}
+                                    <FontAwesomeIcon icon={faArrowDown} />
+                                {/if}
+                                {ucdp_year_change}
+                            </div>
+                        </div>
                     </div>
                 </div>
-                <div class="content-box-buttons">
-                    <div id="pax_link">
-                        <a
-                            href={pax_link}
-                            target="_blank"
-                            on:mousemove={(event) =>
-                                show_database_tooltip("PA-X Database", event)}
-                            on:mouseleave={hide_database_tooltip}
-                        >
-                            <img src="./search.png" alt="search icon" />
-                        </a>
+            </div>
+
+            <div id="peace_process">
+                <!-- <h5>Peace Process</h5> -->
+                <!-- <hr style="border: 1px solid gray; width: 400px"> -->
+                <div class="scrollable-content">
+                    <p
+                        style="margin-bottom: 10px; text-align: center; font-weight: 400"
+                    >
+                        {agts} Peace Agreements:
+                    </p>
+                    <svg height="25px" width={vis_width - 5}>
+                        {#each x_y_rectangles as rect (rect.x + "-" + rect.y)}
+                            <rect
+                                x={rect.x}
+                                y={rect.y}
+                                width={rectSize}
+                                height={rectSize}
+                                fill="black"
+                            />
+                        {/each}
+                    </svg>
+                    <br />
+                    {@html selected_country_details?.peace_process_text}
+                </div>
+            </div>
+
+            <div id="general">
+                <!-- <hr style="border: 1px solid gray; width: 400px"> -->
+                <div class="scrollable-content">
+                    <p
+                        style="margin-bottom: 0px; margin-top: 10px; text-align: center; font-weight: 450"
+                    >
+                        Global Peace Index Ranking:
+                    </p>
+                    <div id="gpi" bind:clientWidth={vis_width}>
+                        <svg height="35px" width={vis_width}>
+                            <defs>
+                                <linearGradient id="Gradient1">
+                                    <stop class="stop1" offset="0%" />
+                                    <stop class="stop2" offset="50%" />
+                                    <stop class="stop3" offset="100%" />
+                                </linearGradient>
+                            </defs>
+                            <rect
+                                id="rect1"
+                                x="5"
+                                y="0"
+                                rx="2"
+                                width={vis_width - 5}
+                                height="20"
+                            />
+                            <line
+                                x1={gpi_scaling(gpi)}
+                                y1="0"
+                                x2={gpi_scaling(gpi)}
+                                y2="20"
+                                stroke="white"
+                                stroke-width="1"
+                            />
+                            <text
+                                x={gpi_scaling(gpi) - 5}
+                                y="15"
+                                paint-order="stroke"
+                                stroke="black"
+                                fill="white"
+                                stroke-linecap="butt"
+                                stroke-linejoin="miter"
+                                text-anchor="end">{gpi}</text
+                            >
+                            <text
+                                x="5"
+                                y="30"
+                                fill="black"
+                                font-size="10"
+                                font-weight="500"
+                                text-anchor="start">more peaceful</text
+                            >
+                            <text
+                                x={vis_width}
+                                y="30"
+                                fill="black"
+                                font-size="10"
+                                font-weight="500"
+                                text-anchor="end">less peaceful</text
+                            >
+                        </svg>
+                    </div>
+
+                    <p
+                        style="margin-bottom: 0px; margin-top: 15px; text-align: center; font-weight: 450"
+                    >
+                        Corruption Perception Index Ranking:
+                    </p>
+                    <div id="cpi">
+                        <svg height="35px" width={vis_width}>
+                            <defs>
+                                <linearGradient id="Gradient2">
+                                    <stop class="stop11" offset="0%" />
+                                    <stop class="stop22" offset="50%" />
+                                    <stop class="stop33" offset="100%" />
+                                </linearGradient>
+                            </defs>
+                            <rect
+                                id="rect2"
+                                x="5"
+                                rx="2"
+                                y="0"
+                                width={vis_width - 5}
+                                height="20"
+                            />
+                            <line
+                                x1={cpi_scaling(cpi)}
+                                y1="0"
+                                x2={cpi_scaling(cpi)}
+                                y2="20"
+                                stroke="white"
+                                stroke-width="1"
+                            />
+                            <text
+                                x={cpi_scaling(cpi) - 5}
+                                y="15"
+                                paint-order="stroke"
+                                stroke="black"
+                                fill="white"
+                                stroke-linecap="butt"
+                                stroke-linejoin="miter"
+                                text-anchor="end">{cpi}</text
+                            >
+                            <text
+                                x="5"
+                                y="30"
+                                fill="black"
+                                font-size="10"
+                                font-weight="500"
+                                text-anchor="start">less corrupt</text
+                            >
+                            <text
+                                x={vis_width}
+                                y="30"
+                                fill="black"
+                                font-size="10"
+                                font-weight="500"
+                                text-anchor="end">more corrupt</text
+                            >
+                        </svg>
+                    </div>
+
+                    <br />
+
+                    {@html selected_country_details?.sm_general_updates}
+                </div>
+            </div>
+
+            <div id="tracker">
+                <!-- <hr style="border: 1px solid gray; width: 400px"> -->
+                <div id="database_tooltip">tooltip</div>
+                <div class="content-wrapper">
+                    <div class="content-box-buttons">
+                        <div id="tracker_link">
+                            <a
+                                href={tracker_link}
+                                target="_blank"
+                                on:mousemove={(event) =>
+                                    show_database_tooltip(
+                                        "PA-X Tracker",
+                                        event,
+                                    )}
+                                on:mouseleave={hide_database_tooltip}
+                            >
+                                <img src="./pax.png" alt="pax logo" />
+                            </a>
+                        </div>
+                    </div>
+                    <div class="content-box-buttons">
+                        <div id="pax_link">
+                            <a
+                                href={pax_link}
+                                target="_blank"
+                                on:mousemove={(event) =>
+                                    show_database_tooltip(
+                                        "PA-X Database",
+                                        event,
+                                    )}
+                                on:mouseleave={hide_database_tooltip}
+                            >
+                                <img src="./search.png" alt="search icon" />
+                            </a>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
+    {/if}
 </div>
 
 <style>
@@ -681,24 +682,6 @@
     #general,
     #peace_process {
         flex-grow: 3; /* Takes three units of the available space each */
-    }
-
-    h5 {
-        position: sticky;
-        top: 0;
-        z-index: 1;
-        margin: 0;
-        padding: 5px 15px;
-        color: black;
-        font-size: 1em;
-        font-weight: 450;
-    }
-
-    @media only screen and (max-width: 768px) {
-        h5 {
-            font-size: 0.9em;
-            padding: 3px 10px;
-        }
     }
 
     h6 {
