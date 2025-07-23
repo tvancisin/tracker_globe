@@ -19,7 +19,7 @@ yarn dev
 
 yarn build 
 
-### Deplyoment
+### Deployment
 
 yarn deploy
 
