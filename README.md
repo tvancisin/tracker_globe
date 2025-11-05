@@ -1,4 +1,6 @@
-# Svelte App
+## Global Peace and Conflict 
+
+<img src="globe_peace_min.jpg"/>
 
 This is a [`Svelte`] project scaffolded with [`Vite`]. It includes a deployment setup using [`gh-pages`] to publish the built site to GitHub Pages.
 
