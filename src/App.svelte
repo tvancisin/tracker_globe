@@ -265,7 +265,7 @@
         font-weight="400"
         text-anchor="start"
       >
-        Agreement in 2024
+        Agreement in 2025
       </text>
 
       <image href="./loc_agt.png" x="80%" y="36%" width="18%" height="28%" />
@@ -277,7 +277,7 @@
         font-weight="400"
         text-anchor="start"
       >
-        Local agreement in 2024
+        Local agreement in 2025
       </text>
 
       <rect x="84%" y="69%" width="10%" rx="1" height="25%" fill="#A1A1A2" />
